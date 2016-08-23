@@ -29,7 +29,7 @@ app.use('/customers', customersRouter);
 app.get('/', function(req, res, next) {
 	return Department.getDefault()
 	.then(function(department) {
-		res.render('index', {def: department});
+		res.render('index', {def: department, title: "Home"});
 	})
 	.catch(next)
 });

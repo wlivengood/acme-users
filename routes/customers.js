@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 		})
 	})
 	.then(function(customers) {
-		res.render('customers', {customers: customers, def: def})
+		res.render('customers', {customers: customers, def: def, title: "customers"})
 	})
 	.catch(next);
 });

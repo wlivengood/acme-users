@@ -30,7 +30,8 @@ router.get('/:id', function(req, res, next) {
 	})
 	.then(function(results) {
 		employees = results;
-		res.render('departments', {departments: departments, department: department, def: def, employees: employees});
+		res.render('departments', {
+			departments: departments, department: department, def: def, employees: employees, title: department.name + " Department"});
 	})
 	.catch(next);
 });

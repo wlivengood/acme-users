@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{title}}</title>
+	<title>Acme {{title}}</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<h1>Acme {{title}}</h1>
 	<ul class="nav nav-tabs">
 		<li><a href="/">Home</a></li>
-		<li><a href="/departments/{{def.id}}">Departments ({{def.name}})</a></li>
-		<li><a href="/customers">Customers</a></li>
+		<li {% if departments %}class='active'{% endif %}><a href="/departments/{{def.id}}">Departments ({{def.name}})</a></li>
+		<li {% if customers %}class='active'{% endif %}><a href="/customers">Customers</a></li>
 	</ul>
 	<div class="container">
 	{% block main %}

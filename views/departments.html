@@ -15,11 +15,12 @@
 	</div>
 	{% endif %}
 	{% if !department.isDefault %}
-	<div class='well'>
+	<div>
 		<form method='POST' action='/departments/{{department.id}}?method=PUT'>
 			<button class = 'btn btn-warning'>Make Default</button>
 		</form>
 	</div>
+	<br>
 	{% endif %}
 	<ul class='nav nav-pills'>
 		{% for dept in departments %}
