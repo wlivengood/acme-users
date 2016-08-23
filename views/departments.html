@@ -1,0 +1,44 @@
+{% extends './layout.html' %}
+{% block main %}
+</br>
+<form action="/departments/{{department.id}}/employees" method="POST">
+    <label for="name_field">Add Employee:</label>
+    <input name="name" value = "Employee Name" type="text" id="name_field"/>
+    <input class='btn btn-primary' type="submit" value="Submit" />
+ </form>
+
+<br/>
+
+	{% if department.isDefault %}
+	<div class='well'>
+		This is the default department
+	</div>
+	{% endif %}
+	{% if !department.isDefault %}
+	<div class='well'>
+		<form method='POST' action='/departments/{{department.id}}?method=PUT'>
+			<button class = 'btn btn-warning'>Make Default</button>
+		</form>
+	</div>
+	{% endif %}
+	<ul class='nav nav-pills'>
+		{% for department in departments %}
+		<li><a href="/departments/{{department.id}}">{{department.name}}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="container">
+		<ul>
+			{% for employee in employees %}
+			<li>
+			{{employee.name}}
+			<form method='POST' action='/departments/{{department.id}}/employees/{{employee.id}}?method=PUT'>
+			<button class = 'btn btn-primary'>Make Customer</button>
+			</form>
+			<form method='POST' action='/departments/{{department.id}}/employees/{{employee.id}}?method=DELETE'>
+			<button class = 'btn btn-danger'>Delete Employee</button>
+			</form>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}

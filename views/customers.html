@@ -1,0 +1,26 @@
+{% extends './layout.html' %}
+{% block main %}
+</br>
+<form action="/customers" method="POST">
+    <label for="name_field">Add Customer:</label>
+    <input name="name" value = "Customer Name" type="text" id="name_field"/>
+    <input class='btn btn-primary' type="submit" value="Submit" />
+ </form>
+
+<br/>
+	<div class="container">
+		<ul>
+			{% for customer in customers %}
+			<li>
+			{{customer.name}}
+			<form method='POST' action='/customers/{{customer.id}}?method=PUT'>
+			<button class = 'btn btn-primary'>Make Employee</button>
+			</form>
+			<form method='POST' action='/customers/{{customer.id}}?method=DELETE'>
+			<button class = 'btn btn-danger'>Delete Customer</button>
+			</form>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}
