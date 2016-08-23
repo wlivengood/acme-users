@@ -22,23 +22,34 @@
 	</div>
 	{% endif %}
 	<ul class='nav nav-pills'>
-		{% for department in departments %}
-		<li><a href="/departments/{{department.id}}">{{department.name}}</a></li>
+		{% for dept in departments %}
+		<li {% if dept.id == department.id %} class="active" {% endif %}><a href="/departments/{{dept.id}}">{{dept.name}}</a></li>
 		{% endfor %}
 	</ul>
-	<div class="container">
-		<ul>
-			{% for employee in employees %}
-			<li>
-			{{employee.name}}
+	<table class="table">
+		<tr>
+			<th>Name</th>
+			<th>Actions</th>
+		</tr>
+		{% for employee in employees %}
+		<tr>
+		<td>{{employee.name}}</td>
+		<td>
 			<form method='POST' action='/departments/{{department.id}}/employees/{{employee.id}}?method=PUT'>
 			<button class = 'btn btn-primary'>Make Customer</button>
 			</form>
 			<form method='POST' action='/departments/{{department.id}}/employees/{{employee.id}}?method=DELETE'>
 			<button class = 'btn btn-danger'>Delete Employee</button>
 			</form>
-			</li>
-			{% endfor %}
-		</ul>
-	</div>
+		</td>
+		</tr>
+		{% endfor %}
+	</table>
 {% endblock %}
+
+
+
+
+
+
+

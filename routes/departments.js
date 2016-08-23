@@ -37,8 +37,8 @@ router.get('/:id', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 	return Department.createDepartment(req.body.name)
-	.then(function() {
-		res.redirect('/');
+	.then(function(department) {
+		res.redirect('/departments/' + department.id);
 	})
 	.catch(next);
 });
@@ -46,7 +46,7 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next) {
 	return Department.setDefault(req.params.id)
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/departments/' + req.params.id);
 	})
 	.catch(next);
 })
@@ -59,7 +59,7 @@ router.post('/:id/employees', function(req, res, next) {
 		return user.setDepartment(req.params.id);
 	})
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/departments/' + req.params.id);
 	})
 	.catch(next);
 });
@@ -71,7 +71,7 @@ router.delete('/:departmentId/employees/:id', function(req, res, next) {
 		return user.destroy();
 	})
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/departments/' + req.params.departmentId);
 	})
 	.catch(next);
 });
@@ -82,7 +82,7 @@ router.put('/:departmentId/employees/:id', function(req, res, next) {
 		return user.setDepartment(null);
 	})
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/customers');
 	})
 	.catch(next);
 })

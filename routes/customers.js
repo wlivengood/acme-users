@@ -27,7 +27,7 @@ router.post('/', function(req, res, next) {
 		name: req.body.name
 	})
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/customers');
 	})
 	.catch(next);
 });
@@ -38,7 +38,7 @@ router.delete('/:id', function(req, res, next) {
 		return user.destroy();
 	})
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/customers');
 	})
 	.catch(next);
 });
@@ -54,7 +54,7 @@ router.put('/:id', function(req, res, next) {
 		return user.setDepartment(def.id);
 	})
 	.then(function() {
-		res.redirect('/');
+		res.redirect('/departments/' + def.id);
 	})
 	.catch(next);
 });
