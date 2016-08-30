@@ -3,21 +3,16 @@ var router = express.Router();
 var models = require('../db');
 var Department = models.Department;
 var User = models.User;
+var Promise = require('bluebird');
 module.exports = router;
 
 router.get('/', function(req, res, next) {
-	var def;
-	return Department.getDefault()
-	.then(function(defaultDepartment) {
-		def = defaultDepartment;
-		return User.findAll({
-			where: {
-				departmentId: null
-			}
-		})
-	})
-	.then(function(customers) {
-		res.render('customers', {customers: customers, def: def, title: "customers"})
+	Promise.all([
+      Department.getDefault(),
+      User.findAll({ where: { departmentId: null } })
+  ])
+	.spread(function(def, customers) {
+		res.render('customers', {customers: customers, def: def, title: "customers"});
 	})
 	.catch(next);
 });
@@ -44,17 +39,15 @@ router.delete('/:id', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-	var def;
-	return Department.getDefault()
-	.then(function(defaultDepartment) {
-		def = defaultDepartment;
-		return User.findById(req.params.id);
-	})
+  Promise.all([
+      Department.getDefault(),
+      User.findById(req.params.id)
+  ])
+  .spread(function(defaultDepartment, user){
+    return user.setDepartment(defaultDepartment.id);
+  })
 	.then(function(user) {
-		return user.setDepartment(def.id);
-	})
-	.then(function() {
-		res.redirect('/departments/' + def.id);
+		res.redirect('/departments/' + user.departmentId);
 	})
 	.catch(next);
 });

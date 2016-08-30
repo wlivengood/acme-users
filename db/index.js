@@ -1,4 +1,5 @@
 var Sequelize = require('sequelize');
+//don't hardcode use environment variables
 var db = new Sequelize('postgres://localhost:5432/acme_users', {
 	logging: false
 });
@@ -11,26 +12,15 @@ var Department = db.define('department', {
 	},
 	isDefault: {
 		type: Sequelize.BOOLEAN,
-		allowNull: false
+		allowNull: false,
+    defaultValue: false
 	}
 }, {
 	classMethods: {
 		createDepartment: function(name) {
-			var defExists;
-			return Department.getDefault()
-			.then(function(def) {
-				if (def === null) {
-					defExists = false;
-				}
-				else
-					defExists = true;
-			})
-			.then(function() {
-				return Department.create({
-					name: name,
-					isDefault: !defExists
-				});
-			})
+      return Department.create({
+        name: name
+      });
 		},
 		getDefault: function() {
 			return this.findOne({
@@ -38,20 +28,28 @@ var Department = db.define('department', {
 					isDefault: true
 				}
 			})
+      .then(function(department){
+        if(department)
+          return department;
+        return Department.create({
+          name: 'Accounting',
+          isDefault: true
+        });
+      });
 		},
 		setDefault: function(id) {
 			return this.getDefault()
-			.then(function(oldDefault) {
-				oldDefault.isDefault = false;
-				return oldDefault.save();
+			.then(function(department) {
+				department.isDefault = false;
+				return department.save();
 			})
 			.then(function() {
-				return this.findById(id);
+				return Department.findById(id);
 			})
 			.then(function(newDefault) {
 				newDefault.isDefault = true;
 				return newDefault.save();
-			})
+			});
 		}
 	}
 });
@@ -63,9 +61,10 @@ var User = db.define('user', {
 	}
 });
 
-User.belongsTo(Department, {as: "department"});
+User.belongsTo(Department);
+Department.hasMany(User);
 
 module.exports = {
 	Department: Department,
 	User: User
-}
+};
